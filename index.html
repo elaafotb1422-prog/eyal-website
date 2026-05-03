@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eyal | إيال لإدارة الفعاليات</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=Outfit:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#06040F;--bg2:#0C0820;--surface:#110D25;--surface2:#1A1535;--purple:#7C3AED;--purple-light:#A78BFA;--neon:#39FF6E;--neon-dim:rgba(57,255,110,0.15);--neon-glow:0 0 20px rgba(57,255,110,0.4),0 0 60px rgba(57,255,110,0.15);--purple-glow:0 0 30px rgba(124,58,237,0.5);--text:#F0EBF8;--text-muted:#7E6EA8;--border:rgba(124,58,237,0.2);--border-neon:rgba(57,255,110,0.25);}
+*{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Tajawal',sans-serif;overflow-x:hidden;}
+html[lang="en"] body{font-family:'Outfit',sans-serif;direction:ltr;}
+html[lang="en"] .ar{display:none!important;}html[lang="ar"] .en{display:none!important;}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px 56px;background:rgba(6,4,15,0.9);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+.logo-wrap{display:flex;align-items:center;}
+.logo-img{height:48px;width:auto;object-fit:contain;}
+.nav-links{display:flex;gap:36px;list-style:none;}
+.nav-links a{color:var(--text-muted);text-decoration:none;font-size:13px;transition:color .3s;font-family:'Outfit',sans-serif;}
+.nav-links a:hover{color:var(--neon);}
+.nav-right{display:flex;gap:12px;align-items:center;}
+.lang-btn{background:transparent;border:1px solid var(--border-neon);color:var(--neon);padding:8px 18px;font-size:11px;letter-spacing:2px;cursor:pointer;font-family:'Outfit',sans-serif;transition:all .3s;text-transform:uppercase;border-radius:4px;}
+.lang-btn:hover{background:var(--neon-dim);}
+.nav-cta{background:linear-gradient(135deg,var(--purple),#A855F7);color:#fff;padding:10px 24px;font-size:12px;border:none;cursor:pointer;font-family:'Tajawal',sans-serif;border-radius:6px;text-decoration:none;font-weight:600;transition:all .3s;}
+html[lang="en"] .nav-cta{font-family:'Outfit',sans-serif;}
+.nav-cta:hover{transform:translateY(-1px);box-shadow:var(--purple-glow);}
+.hero{min-height:100vh;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:140px 40px 100px;overflow:hidden;}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 100%,rgba(124,58,237,.15),transparent),radial-gradient(ellipse 40% 40% at 80% 20%,rgba(57,255,110,.05),transparent);}
+.hero-grid{position:absolute;inset:0;opacity:.15;background-image:linear-gradient(rgba(124,58,237,.3) 1px,transparent 1px),linear-gradient(90deg,rgba(124,58,237,.3) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse 80% 60% at 50% 50%,black,transparent);}
+.hero-logo{height:100px;width:auto;object-fit:contain;margin-bottom:28px;opacity:0;animation:fadeUp .8s .1s forwards;filter:drop-shadow(0 0 20px rgba(57,255,110,0.2));}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:var(--neon-dim);border:1px solid var(--border-neon);padding:8px 20px;border-radius:50px;margin-bottom:28px;font-size:12px;letter-spacing:2px;color:var(--neon);font-family:'Outfit',sans-serif;text-transform:uppercase;opacity:0;animation:fadeUp .8s .2s forwards;}
+.hero-badge::before{content:'●';font-size:8px;animation:blink 1.5s ease infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+.hero h1{font-size:clamp(52px,9vw,110px);font-weight:900;line-height:1.0;margin-bottom:6px;opacity:0;animation:fadeUp .8s .4s forwards;}
+.hero h1 .line1{color:#fff;display:block;}
+.hero h1 .line2{display:block;background:linear-gradient(135deg,var(--purple-light),var(--neon));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-tagline{font-size:16px;color:var(--text-muted);letter-spacing:3px;text-transform:uppercase;margin-bottom:24px;font-family:'Outfit',sans-serif;opacity:0;animation:fadeUp .8s .55s forwards;}
+.hero-desc{max-width:560px;font-size:17px;line-height:1.9;color:rgba(240,235,248,.7);margin-bottom:52px;opacity:0;animation:fadeUp .8s .7s forwards;}
+.hero-btns{display:flex;gap:16px;align-items:center;opacity:0;animation:fadeUp .8s .85s forwards;}
+.btn-neon{background:var(--neon);color:#06040F;padding:16px 44px;font-size:13px;font-weight:700;text-decoration:none;border-radius:6px;transition:all .3s;display:inline-block;font-family:'Tajawal',sans-serif;}
+html[lang="en"] .btn-neon{font-family:'Outfit',sans-serif;}
+.btn-neon:hover{box-shadow:var(--neon-glow);transform:translateY(-2px);}
+.btn-outline{border:1px solid var(--border);color:var(--text-muted);padding:16px 36px;font-size:13px;text-decoration:none;border-radius:6px;transition:all .3s;display:inline-block;font-family:'Outfit',sans-serif;}
+.btn-outline:hover{border-color:var(--purple-light);color:var(--purple-light);}
+.stats-bar{background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:28px 56px;display:flex;justify-content:space-around;}
+.stat-item{text-align:center;}
+.stat-num{font-family:'Outfit',sans-serif;font-size:42px;font-weight:600;background:linear-gradient(135deg,var(--neon),var(--purple-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:block;line-height:1;}
+.stat-lbl{font-size:12px;color:var(--text-muted);margin-top:6px;letter-spacing:1px;display:block;}
+#about{padding:120px 56px;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;background:var(--bg2);}
+.section-eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:'Outfit',sans-serif;font-size:11px;letter-spacing:3px;color:var(--neon);text-transform:uppercase;margin-bottom:20px;}
+.section-eyebrow::before{content:'';width:28px;height:1px;background:var(--neon);}
+.section-title{font-size:clamp(32px,4.5vw,52px);font-weight:800;line-height:1.15;margin-bottom:24px;}
+.section-title em{font-style:normal;color:var(--purple-light);}
+.about-body{font-size:16px;line-height:2;color:rgba(240,235,248,.7);margin-bottom:20px;}
+.about-diff{background:var(--surface);border:1px solid var(--border);border-right:3px solid var(--neon);padding:20px 24px;border-radius:8px;margin-top:32px;}
+html[lang="en"] .about-diff{border-right:none;border-left:3px solid var(--neon);}
+.about-diff p{font-size:14px;line-height:1.8;color:var(--text-muted);}
+.about-diff strong{color:var(--neon);}
+.about-visual{display:grid;grid-template-columns:1fr 1fr;gap:3px;}
+.about-card{background:var(--surface);padding:36px 28px;border:1px solid var(--border);transition:all .3s;}
+.about-card:hover{border-color:var(--purple);transform:translateY(-2px);}
+.about-card-num{font-family:'Outfit',sans-serif;font-size:52px;font-weight:600;line-height:1;background:linear-gradient(135deg,var(--neon),var(--purple-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.about-card-lbl{font-size:12px;color:var(--text-muted);margin-top:8px;letter-spacing:1px;}
+#services{padding:120px 56px;}
+.services-intro{max-width:600px;margin-bottom:60px;}
+.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;}
+.srv{background:var(--surface);padding:44px 36px;border:1px solid var(--border);position:relative;overflow:hidden;transition:all .4s;}
+.srv::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--purple),var(--neon));transform:scaleX(0);transition:transform .4s;transform-origin:right;}
+html[lang="en"] .srv::before{transform-origin:left;}
+.srv:hover{background:var(--surface2);border-color:var(--purple);}
+.srv:hover::before{transform:scaleX(1);}
+.srv-num{font-family:'Outfit',sans-serif;font-size:11px;letter-spacing:3px;color:var(--neon);margin-bottom:20px;display:block;}
+.srv h3{font-size:22px;font-weight:700;margin-bottom:14px;}
+.srv p{font-size:14px;line-height:1.9;color:var(--text-muted);}
+#process{padding:120px 56px;background:var(--bg2);border-top:1px solid var(--border);}
+.process-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:0;margin-top:60px;position:relative;}
+.process-grid::before{content:'';position:absolute;top:28px;right:10%;left:10%;height:1px;background:linear-gradient(90deg,var(--purple),var(--neon),var(--purple));z-index:0;}
+.step{text-align:center;position:relative;z-index:1;padding:0 12px;}
+.step-circle{width:56px;height:56px;border-radius:50%;background:var(--bg2);border:2px solid var(--purple);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;color:var(--purple-light);transition:all .3s;}
+.step:hover .step-circle{background:var(--purple);color:#fff;border-color:var(--neon);}
+.step h4{font-size:13px;font-weight:700;margin-bottom:8px;}
+.step p{font-size:12px;color:var(--text-muted);line-height:1.7;}
+#clients{padding:80px 56px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+.clients-label{text-align:center;font-family:'Outfit',sans-serif;font-size:11px;letter-spacing:4px;color:var(--text-muted);text-transform:uppercase;margin-bottom:48px;}
+.clients-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;}
+.client-card{background:var(--surface);padding:28px 16px;border:1px solid var(--border);text-align:center;transition:all .3s;}
+.client-card:hover{border-color:var(--purple);background:var(--surface2);}
+.client-logo-box{height:60px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;}
+.client-logo-real{border-radius:50%;background:#fff;padding:5px;max-height:52px;max-width:52px;object-fit:contain;}
+.client-name{font-size:11px;font-weight:700;margin-bottom:4px;line-height:1.4;}
+.client-event{font-size:10px;color:var(--text-muted);line-height:1.6;}
+#portfolio{padding:120px 56px;}
+.port-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:48px;}
+.port-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;}
+.port-item{position:relative;overflow:hidden;cursor:pointer;border:1px solid var(--border);}
+.port-item:first-child{grid-column:span 2;}
+.port-item:nth-child(4){grid-column:span 2;}
+.port-thumb{aspect-ratio:16/9;position:relative;overflow:hidden;}
+.port-item:not(:first-child):not(:nth-child(4)) .port-thumb{aspect-ratio:4/3;}
+.port-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .6s;}
+.port-item:hover .port-photo{transform:scale(1.08);}
+.port-dim{position:absolute;inset:0;background:rgba(6,4,15,0.3);}
+.port-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(6,4,15,.95) 0%,rgba(6,4,15,.3) 50%,transparent 100%);display:flex;flex-direction:column;justify-content:flex-end;padding:28px;}
+.port-tag{font-family:'Outfit',sans-serif;font-size:10px;letter-spacing:3px;color:var(--neon);text-transform:uppercase;margin-bottom:6px;}
+.port-title{font-size:17px;font-weight:700;}
+.port-meta{font-size:12px;color:rgba(240,235,248,.7);margin-top:4px;}
+.port-info{padding:18px 24px;border-top:1px solid var(--border);background:var(--surface);}
+.port-info-tag{font-family:'Outfit',sans-serif;font-size:10px;letter-spacing:2px;color:var(--neon);text-transform:uppercase;}
+.port-info-title{font-size:15px;font-weight:700;margin-top:4px;}
+.port-info-meta{font-size:12px;color:var(--text-muted);margin-top:2px;font-family:'Outfit',sans-serif;}
+#contact{padding:120px 56px;background:var(--bg2);}
+.contact-wrap{display:grid;grid-template-columns:1fr 1.3fr;gap:80px;align-items:start;}
+.c-item{display:flex;gap:16px;align-items:flex-start;margin-bottom:20px;}
+.c-icon{width:44px;height:44px;flex-shrink:0;background:var(--surface);border:1px solid var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;}
+.c-label{font-family:'Outfit',sans-serif;font-size:10px;letter-spacing:2px;color:var(--neon);text-transform:uppercase;display:block;margin-bottom:4px;}
+.c-val{font-size:14px;color:var(--text);font-family:'Outfit',sans-serif;}
+.form{display:flex;flex-direction:column;gap:14px;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.ff{display:flex;flex-direction:column;gap:7px;}
+.ff label{font-family:'Outfit',sans-serif;font-size:10px;letter-spacing:2px;color:var(--text-muted);text-transform:uppercase;}
+.ff input,.ff textarea,.ff select{background:var(--surface);border:1px solid var(--border);color:var(--text);padding:14px 18px;font-size:14px;font-family:'Tajawal',sans-serif;outline:none;border-radius:6px;transition:border-color .3s;}
+html[lang="en"] .ff input,html[lang="en"] .ff textarea,html[lang="en"] .ff select{font-family:'Outfit',sans-serif;}
+.ff input:focus,.ff textarea:focus,.ff select:focus{border-color:var(--purple);}
+.ff textarea{min-height:110px;resize:none;}
+.ff select option{background:var(--surface);}
+.submit-btn{background:linear-gradient(135deg,var(--purple),#A855F7);color:#fff;padding:16px 40px;font-size:14px;border:none;cursor:pointer;border-radius:6px;font-family:'Tajawal',sans-serif;font-weight:700;transition:all .3s;align-self:flex-start;}
+html[lang="en"] .submit-btn{font-family:'Outfit',sans-serif;}
+.submit-btn:hover{transform:translateY(-2px);box-shadow:var(--purple-glow);}
+footer{background:var(--bg);border-top:1px solid var(--border);padding:36px 56px;display:flex;align-items:center;justify-content:space-between;}
+footer p{font-family:'Outfit',sans-serif;font-size:11px;color:var(--text-muted);}
+.footer-logo{height:40px;width:auto;object-fit:contain;}
+.footer-socials{display:flex;gap:12px;margin-top:8px;}
+.fsoc{width:32px;height:32px;border-radius:6px;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .3s;cursor:pointer;text-decoration:none;}
+.fsoc:hover{border-color:var(--neon);}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:900px){
+  nav{padding:14px 20px;}.nav-links{display:none;}.logo-img{height:38px;}
+  #about,.contact-wrap{grid-template-columns:1fr;gap:48px;}
+  .services-grid,.process-grid{grid-template-columns:1fr 1fr;}.process-grid::before{display:none;}
+  .port-grid{grid-template-columns:1fr 1fr;}.port-item:first-child,.port-item:nth-child(4){grid-column:span 2;}
+  .clients-grid{grid-template-columns:repeat(3,1fr);}
+  section,#about,#services,#process,#portfolio,#contact{padding:80px 20px;}
+  .stats-bar{padding:24px 20px;flex-wrap:wrap;gap:24px;}
+  #clients{padding:60px 20px;}footer{flex-direction:column;gap:20px;}.hero-logo{height:72px;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo-wrap">
+    <img src="https://i.ibb.co/Dgz8KWXk/eyal-logo.png" class="logo-img" alt="Eyal إيال"/>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#about" class="ar">من نحن</a><a href="#about" class="en">About</a></li>
+    <li><a href="#services" class="ar">الخدمات</a><a href="#services" class="en">Services</a></li>
+    <li><a href="#process" class="ar">طريقة العمل</a><a href="#process" class="en">Process</a></li>
+    <li><a href="#portfolio" class="ar">أعمالنا</a><a href="#portfolio" class="en">Portfolio</a></li>
+    <li><a href="#contact" class="ar">تواصل</a><a href="#contact" class="en">Contact</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="lang-btn" onclick="toggleLang()">EN / عر</button>
+    <a href="#contact" class="nav-cta ar">ابدأ مشروعك</a>
+    <a href="#contact" class="nav-cta en">Start Project</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg"></div><div class="hero-grid"></div>
+  <img src="https://i.ibb.co/Dgz8KWXk/eyal-logo.png" class="hero-logo" alt="Eyal إيال"/>
+  <div class="hero-badge ar">إدارة الفعاليات الاستراتيجية — المملكة العربية السعودية</div>
+  <div class="hero-badge en">Strategic Event Management — Saudi Arabia</div>
+  <h1>
+    <span class="line1 ar">إيال</span><span class="line1 en">EYAL</span>
+    <span class="line2 ar">لإدارة الفعاليات</span><span class="line2 en">Event Management</span>
+  </h1>
+  <p class="hero-tagline ar">نحول الرؤى إلى تجارب ملهمة</p>
+  <p class="hero-tagline en">We Transform Visions Into Inspiring Experiences</p>
+  <p class="hero-desc ar">شركة سعودية رائدة في تصميم وتنفيذ الفعاليات الاستراتيجية والمجتمعية، نضمن قياس الأثر لتحقيق نتائج حقيقية ومستدامة.</p>
+  <p class="hero-desc en">A leading Saudi company designing and executing strategic and community events, ensuring impact measurement for real sustainable results.</p>
+  <div class="hero-btns">
+    <a href="#portfolio" class="btn-neon ar">شاهد أعمالنا</a>
+    <a href="#portfolio" class="btn-neon en">View Our Work</a>
+    <a href="#contact" class="btn-outline ar">تواصل معنا</a>
+    <a href="#contact" class="btn-outline en">Get in Touch</a>
+  </div>
+</section>
+
+<div class="stats-bar">
+  <div class="stat-item"><span class="stat-num">+100K</span><span class="stat-lbl ar">مشارك خدمناهم</span><span class="stat-lbl en">Participants Served</span></div>
+  <div class="stat-item"><span class="stat-num">5+</span><span class="stat-lbl ar">شركاء حكوميين</span><span class="stat-lbl en">Gov. Partners</span></div>
+  <div class="stat-item"><span class="stat-num">2,000+</span><span class="stat-lbl ar">مشارك في فعالية واحدة</span><span class="stat-lbl en">Participants in One Event</span></div>
+  <div class="stat-item"><span class="stat-num">400+</span><span class="stat-lbl ar">طالب في بطولة إلكترونية</span><span class="stat-lbl en">Students in E-Sports</span></div>
+</div>
+
+<section id="about">
+  <div>
+    <div class="section-eyebrow ar">من نحن</div><div class="section-eyebrow en">About Us</div>
+    <h2 class="section-title ar">نفهم <em>الرؤية</em><br>والاستراتيجية<br>والتنفيذ</h2>
+    <h2 class="section-title en">We Understand <em>Vision</em><br>Strategy &<br>Execution</h2>
+    <p class="about-body ar">إيال لإدارة الفعاليات شركة سعودية رائدة في تصميم وتنفيذ الفعاليات الاستراتيجية والمجتمعية. نحول الرؤى إلى تجارب ملهمة، ونضمن قياس الأثر لتحقيق نتائج حقيقية ومستدامة.</p>
+    <p class="about-body en">Eyal Event Management is a leading Saudi company specializing in designing and executing strategic and community events.</p>
+    <p class="about-body ar">قدمنا فعاليات مجتمعية وخيرية وأكاديمية متنوعة، قائمة على تخطيط استراتيجي وتنفيذ احترافي يحقق أثرًا ملموسًا ومستدامًا.</p>
+    <p class="about-body en">We have delivered diverse community, charitable, and academic events built on strategic planning and professional execution.</p>
+    <div class="about-diff">
+      <p class="ar"><strong>ما يميزنا:</strong> تركز إيال على الاستراتيجية والتصميم وقياس الأثر — بينما يركز المزود التقليدي على التنفيذ فقط.</p>
+      <p class="en"><strong>What sets us apart:</strong> Eyal focuses on strategy, design AND impact measurement — not just execution.</p>
+    </div>
+  </div>
+  <div class="about-visual">
+    <div class="about-card"><div class="about-card-num">+100K</div><div class="about-card-lbl ar">مشارك</div><div class="about-card-lbl en">Participants</div></div>
+    <div class="about-card"><div class="about-card-num">5+</div><div class="about-card-lbl ar">جهات حكومية</div><div class="about-card-lbl en">Gov. Partners</div></div>
+    <div class="about-card"><div class="about-card-num">3</div><div class="about-card-lbl ar">خدمات متكاملة</div><div class="about-card-lbl en">Core Services</div></div>
+    <div class="about-card"><div class="about-card-num">2026</div><div class="about-card-lbl ar">سنة النشاط</div><div class="about-card-lbl en">Active Since</div></div>
+  </div>
+</section>
+
+<section id="services">
+  <div class="services-intro">
+    <div class="section-eyebrow ar">خدماتنا</div><div class="section-eyebrow en">Our Services</div>
+    <h2 class="section-title ar">تميّز في كل تفصيلة،<br><em>استثنائية</em> في كل فعالية</h2>
+    <h2 class="section-title en">Excellence in Every Detail,<br><em>Exceptional</em> in Every Event</h2>
+  </div>
+  <div class="services-grid">
+    <div class="srv"><span class="srv-num">01</span><h3 class="ar">تصميم وتنفيذ فعاليات إبداعية</h3><h3 class="en">Creative Event Design & Execution</h3><p class="ar">حلول ديكور مبتكرة، أنشطة تفاعلية مميزة، وتجهيزات متكاملة تعكس هوية الحدث باحترافية.</p><p class="en">Innovative décor, interactive activities, and complete setups that professionally reflect the event's identity.</p></div>
+    <div class="srv"><span class="srv-num">02</span><h3 class="ar">توفير كوادر مؤهلة ومتخصصة</h3><h3 class="en">Qualified Staff Provision</h3><p class="ar">توفير كوادر وموظفين مؤقتين مؤهلين لضمان تنفيذ الفعالية بأعلى معايير الجودة.</p><p class="en">Providing qualified and specialized temporary staff to ensure the highest quality standards.</p></div>
+    <div class="srv"><span class="srv-num">03</span><h3 class="ar">إدارة الفعاليات</h3><h3 class="en">Event Management</h3><p class="ar">التخطيط والتنسيق وإدارة كافة جوانب الفعالية بدقة لضمان تجربة سلسة وناجحة.</p><p class="en">Planning, coordinating, and managing all event aspects for a smooth and successful experience.</p></div>
+  </div>
+</section>
+
+<section id="process">
+  <div class="section-eyebrow ar">طريقة عملنا</div><div class="section-eyebrow en">Our Process</div>
+  <h2 class="section-title ar">من <em>الفكرة</em> إلى <em>الأثر</em></h2>
+  <h2 class="section-title en">From <em>Idea</em> to <em>Impact</em></h2>
+  <div class="process-grid">
+    <div class="step"><div class="step-circle">01</div><h4 class="ar">تحديد الأهداف</h4><h4 class="en">Goal Setting</h4><p class="ar">فهم أهداف العميل وأصحاب المصلحة</p><p class="en">Understanding client goals</p></div>
+    <div class="step"><div class="step-circle">02</div><h4 class="ar">تطوير الأفكار</h4><h4 class="en">Concept Dev.</h4><p class="ar">تصميم أفكار مبتكرة للفعالية</p><p class="en">Designing innovative concepts</p></div>
+    <div class="step"><div class="step-circle">03</div><h4 class="ar">التخطيط التفصيلي</h4><h4 class="en">Detailed Planning</h4><p class="ar">تخطيط اللوجستيات والجداول</p><p class="en">Planning logistics & timelines</p></div>
+    <div class="step"><div class="step-circle">04</div><h4 class="ar">الإدارة الميدانية</h4><h4 class="en">On-Site Mgmt</h4><p class="ar">إشراف كامل لسير الفعالية</p><p class="en">Full supervision of execution</p></div>
+    <div class="step"><div class="step-circle">05</div><h4 class="ar">قياس الأثر</h4><h4 class="en">Impact Measure</h4><p class="ar">تحليل الأداء وتقديم توصيات</p><p class="en">Analyzing performance</p></div>
+  </div>
+</section>
+
+<section id="clients">
+  <p class="clients-label ar">شركاء النجاح</p>
+  <p class="clients-label en">Our Partners</p>
+  <div class="clients-grid">
+    <div class="client-card"><div class="client-logo-box"><img src="https://i.ibb.co/20PBZtmT/u-B7-Fq-Mo0-400x400.jpg" class="client-logo-real" alt="كهاتين"/></div><div class="client-name ar">جمعية كهاتين</div><div class="client-name en">Kahatein Assoc.</div><div class="client-event ar">يوم التأسيس — مكة</div><div class="client-event en">Foundation Day</div></div>
+    <div class="client-card"><div class="client-logo-box"><img src="https://i.ibb.co/BVshHRSg/119ee8f1f8d0-62041.jpg" class="client-logo-real" alt="وقف"/></div><div class="client-name ar">وقف الملك عبدالعزيز</div><div class="client-name en">KA Endowment</div><div class="client-event ar">سلسلة أعمال تنظيمية</div><div class="client-event en">Operations Series</div></div>
+    <div class="client-card"><div class="client-logo-box"><img src="https://i.ibb.co/8Lhn5bDh/Unknown.png" class="client-logo-real" alt="جامعة الإمام"/></div><div class="client-name ar">جامعة الإمام محمد بن سعود</div><div class="client-name en">Imam University</div><div class="client-event ar">دورة تدريبية للطلاب</div><div class="client-event en">Student Training</div></div>
+    <div class="client-card"><div class="client-logo-box"><img src="https://i.ibb.co/q3626620/Unknown-1.png" class="client-logo-real" alt="وزارة التعليم"/></div><div class="client-name ar">وزارة التعليم</div><div class="client-name en">Ministry of Education</div><div class="client-event ar">دوري الرياضات الإلكترونية</div><div class="client-event en">E-Sports League</div></div>
+    <div class="client-card"><div class="client-logo-box"><img src="https://i.ibb.co/b5TXspKZ/Ministry-of-Sports-1.png" class="client-logo-real" alt="وزارة الرياضة"/></div><div class="client-name ar">وزارة الرياضة</div><div class="client-name en">Ministry of Sport</div><div class="client-event ar">فورمولا إي جدة 2026</div><div class="client-event en">Formula E 2026</div></div>
+  </div>
+</section>
+
+<section id="portfolio">
+  <div class="port-header">
+    <div>
+      <div class="section-eyebrow ar">أعمالنا</div><div class="section-eyebrow en">Our Work</div>
+      <h2 class="section-title ar">لحظات <em>صنعناها</em></h2>
+      <h2 class="section-title en">Moments <em>We Made</em></h2>
+    </div>
+    <a href="#contact" class="btn-outline ar">تواصل معنا ←</a>
+    <a href="#contact" class="btn-outline en">Get in Touch →</a>
+  </div>
+  <div class="port-grid">
+    <div class="port-item"><div class="port-thumb"><img class="port-photo" src="https://i.ibb.co/Q3Rx00Mt/D4163-F0-C-5-CE6-4777-9-CC8-CFD073-D6-FBA5.jpg" alt="يوم التأسيس"/><div class="port-dim"></div><div class="port-overlay"><div class="port-tag ar">جمعية كهاتين</div><div class="port-tag en">Kahatein</div><div class="port-title ar">يوم التأسيس السعودي</div><div class="port-title en">Saudi Foundation Day</div><div class="port-meta">+2,000 Participants</div></div></div><div class="port-info"><div class="port-info-tag ar">جمعية كهاتين</div><div class="port-info-tag en">Kahatein</div><div class="port-info-title ar">يوم التأسيس السعودي</div><div class="port-info-title en">Saudi Foundation Day</div><div class="port-info-meta">+2,000 Participants</div></div></div>
+    <div class="port-item"><div class="port-thumb"><img class="port-photo" src="https://i.ibb.co/sv905VFz/e00f3cf4-561e-46c3-bc39-95ed5c4f6f96.jpg" alt="توزيع المياه"/><div class="port-dim"></div><div class="port-overlay"><div class="port-tag ar">وقف الملك عبدالعزيز</div><div class="port-tag en">KA Endowment</div><div class="port-title ar">إدارة الفعاليات وتوزيع المياه</div><div class="port-title en">Event & Water Distribution</div><div class="port-meta">+100,000 Visitors</div></div></div><div class="port-info"><div class="port-info-tag ar">وقف الملك عبدالعزيز</div><div class="port-info-tag en">KA Endowment</div><div class="port-info-title ar">إدارة الفعاليات وتوزيع المياه</div><div class="port-info-title en">Event & Water Distribution</div><div class="port-info-meta">+100,000 People</div></div></div>
+    <div class="port-item"><div class="port-thumb"><img class="port-photo" src="https://i.ibb.co/yF5VPx71/DSC00256-1.png" alt="ورشة التوجيه"/><div class="port-dim"></div><div class="port-overlay"><div class="port-tag ar">فعالية أكاديمية</div><div class="port-tag en">Academic Event</div><div class="port-title ar">ورشة التوجيه المهني</div><div class="port-title en">Career Guidance Workshop</div><div class="port-meta">+50 Students | EY & KABI</div></div></div><div class="port-info"><div class="port-info-tag ar">جامعة الإمام</div><div class="port-info-tag en">Imam University</div><div class="port-info-title ar">ورشة التوجيه المهني</div><div class="port-info-title en">Career Guidance Workshop</div><div class="port-info-meta">EY & KABI Speakers</div></div></div>
+    <div class="port-item"><div class="port-thumb"><img class="port-photo" src="https://i.ibb.co/zHjKznst/PHOTO-2025-11-04-13-38-30.jpg" alt="دوري إلكتروني"/><div class="port-dim"></div><div class="port-overlay"><div class="port-tag ar">وزارة التعليم</div><div class="port-tag en">Ministry of Education</div><div class="port-title ar">دوري الرياضات الإلكترونية المدرسي</div><div class="port-title en">School E-Sports League</div><div class="port-meta">+400 Students | 3 Schools</div></div></div><div class="port-info"><div class="port-info-tag ar">وزارة التعليم</div><div class="port-info-tag en">Ministry of Education</div><div class="port-info-title ar">دوري الرياضات الإلكترونية</div><div class="port-info-title en">School E-Sports League</div><div class="port-info-meta">+400 Students</div></div></div>
+    <div class="port-item"><div class="port-thumb"><img class="port-photo" src="https://i.ibb.co/9mzmbL8W/20ce0dc1-1b93-4661-8cad-3134c1a91847.jpg" alt="فورمولا إي"/><div class="port-dim"></div><div class="port-overlay"><div class="port-tag ar">وزارة الرياضة</div><div class="port-tag en">Ministry of Sport</div><div class="port-title ar">فورمولا إي جدة 2026</div><div class="port-title en">Formula E Jeddah 2026</div><div class="port-meta">~6,000 Visitors</div></div></div><div class="port-info"><div class="port-info-tag ar">وزارة الرياضة</div><div class="port-info-tag en">Ministry of Sport</div><div class="port-info-title ar">فورمولا إي جدة 2026</div><div class="port-info-title en">Formula E Jeddah 2026</div><div class="port-info-meta">~6,000 Visitors</div></div></div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="contact-wrap">
+    <div>
+      <div class="section-eyebrow ar">تواصل معنا</div><div class="section-eyebrow en">Contact Us</div>
+      <h2 class="section-title ar">شريك يفهم<br><em>الرؤية</em> والتنفيذ</h2>
+      <h2 class="section-title en">A Partner Who Understands<br><em>Vision</em> & Execution</h2>
+      <p style="font-size:16px;line-height:2;color:var(--text-muted);margin-bottom:32px;" class="ar">إن كنتم تبحثون عن شريك يفهم الرؤية والاستراتيجية والتنفيذ، فإن إيال جاهزة لقيادة التجربة.</p>
+      <p style="font-size:16px;line-height:2;color:var(--text-muted);margin-bottom:32px;" class="en">Looking for a partner who understands vision, strategy and execution — Eyal is ready to lead.</p>
+      <div class="c-item"><div class="c-icon">🌐</div><div><span class="c-label ar">الموقع</span><span class="c-label en">Website</span><span class="c-val">www.eyalentertainment.com</span></div></div>
+      <div class="c-item"><div class="c-icon">✉️</div><div><span class="c-label ar">البريد</span><span class="c-label en">Email</span><span class="c-val">info@eyalentertainment.com</span></div></div>
+      <div class="c-item"><div class="c-icon">📞</div><div><span class="c-label ar">الهاتف</span><span class="c-label en">Phone</span><span class="c-val" style="direction:ltr;display:block;">+966 503 638 81</span></div></div>
+    </div>
+    <form class="form" onsubmit="handleSubmit(event)">
+      <div class="form-row">
+        <div class="ff"><label class="ar">الاسم</label><label class="en">Name</label><input type="text" class="ar" placeholder="اسمك الكريم"/><input type="text" class="en" placeholder="Your Name"/></div>
+        <div class="ff"><label class="ar">رقم الجوال</label><label class="en">Phone</label><input type="tel" placeholder="+966 5XX XXX XXX"/></div>
+      </div>
+      <div class="ff"><label class="ar">الجهة</label><label class="en">Organization</label><input type="text" class="ar" placeholder="اسم الجهة أو الشركة"/><input type="text" class="en" placeholder="Your organization"/></div>
+      <div class="ff">
+        <label class="ar">نوع الفعالية</label><label class="en">Event Type</label>
+        <select>
+          <option class="ar">اختر نوع الفعالية</option><option class="ar">فعالية مجتمعية</option><option class="ar">فعالية حكومية</option><option class="ar">بطولة أو دوري</option><option class="ar">ورشة أو تدريب</option><option class="ar">توفير كوادر</option><option class="ar">أخرى</option>
+          <option class="en">Select Event Type</option><option class="en">Community Event</option><option class="en">Government Event</option><option class="en">Tournament / League</option><option class="en">Workshop / Training</option><option class="en">Staff Provision</option><option class="en">Other</option>
+        </select>
+      </div>
+      <div class="ff"><label class="ar">تفاصيل الفعالية</label><label class="en">Details</label><textarea class="ar" placeholder="أخبرنا عن الفعالية وتاريخها وعدد المشاركين المتوقع..."></textarea><textarea class="en" placeholder="Tell us about the event, date, expected attendees..."></textarea></div>
+      <button type="submit" class="submit-btn ar">أرسل الطلب ←</button>
+      <button type="submit" class="submit-btn en">Send Request →</button>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <div>
+    <img src="https://i.ibb.co/Dgz8KWXk/eyal-logo.png" class="footer-logo" alt="Eyal إيال"/>
+    <div style="margin-top:8px;">
+      <p class="ar">لإدارة وتنظيم الفعاليات</p>
+      <p class="en">Event Management</p>
+    </div>
+  </div>
+  <div>
+    <p class="ar">© 2026 إيال — جميع الحقوق محفوظة</p>
+    <p class="en">© 2026 Eyal — All Rights Reserved</p>
+    <div class="footer-socials">
+      <a class="fsoc" href="mailto:info@eyalentertainment.com">✉️</a>
+      <a class="fsoc" href="tel:+966503638810">📞</a>
+      <a class="fsoc" href="https://www.eyalentertainment.com" target="_blank">🌐</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+function toggleLang(){
+  const h = document.documentElement;
+  if(h.lang === 'ar'){ h.lang = 'en'; h.dir = 'ltr'; }
+  else { h.lang = 'ar'; h.dir = 'rtl'; }
+}
+function handleSubmit(e){
+  e.preventDefault();
+  const isAr = document.documentElement.lang === 'ar';
+  e.target.querySelectorAll('button[type="submit"]').forEach(b => {
+    b.style.background = '#1a6b2a';
+    b.textContent = isAr ? '✓ تم الإرسال' : '✓ Sent';
+    setTimeout(() => {
+      b.style.background = '';
+      b.textContent = isAr ? 'أرسل الطلب ←' : 'Send Request →';
+    }, 3000);
+  });
+}
+</script>
+</body>
+</html>

@@ -125,6 +125,12 @@ html[lang="en"] .ff input,html[lang="en"] .ff textarea,html[lang="en"] .ff selec
 .submit-btn{background:linear-gradient(135deg,var(--purple),#A855F7);color:#fff;padding:16px 40px;font-size:14px;border:none;cursor:pointer;border-radius:6px;font-family:'Tajawal',sans-serif;font-weight:700;transition:all .3s;align-self:flex-start;}
 html[lang="en"] .submit-btn{font-family:'Outfit',sans-serif;}
 .submit-btn:hover{transform:translateY(-2px);box-shadow:var(--purple-glow);}
+.submit-btn:disabled{opacity:.6;cursor:not-allowed;transform:none;box-shadow:none;}
+.form-msg{font-size:13px;line-height:1.7;padding:12px 16px;border-radius:6px;display:none;font-family:'Outfit',sans-serif;}
+html[lang="ar"] .form-msg{font-family:'Tajawal',sans-serif;}
+.form-msg.show{display:block;}
+.form-msg.ok{background:rgba(57,255,110,0.1);border:1px solid rgba(57,255,110,0.3);color:var(--neon);}
+.form-msg.err{background:rgba(255,80,80,0.1);border:1px solid rgba(255,80,80,0.3);color:#ff8080;}
 footer{background:var(--bg);border-top:1px solid var(--border);padding:36px 56px;display:flex;align-items:center;justify-content:space-between;}
 footer p{font-family:'Outfit',sans-serif;font-size:11px;color:var(--text-muted);}
 .footer-logo{height:40px;width:auto;object-fit:contain;}
@@ -283,7 +289,7 @@ footer p{font-family:'Outfit',sans-serif;font-size:11px;color:var(--text-muted);
       <div class="c-item"><div class="c-icon">✉️</div><div><span class="c-label ar">البريد</span><span class="c-label en">Email</span><span class="c-val">info@eyalentertainment.com</span></div></div>
       <div class="c-item"><div class="c-icon">📞</div><div><span class="c-label ar">الهاتف</span><span class="c-label en">Phone</span><span class="c-val" style="direction:ltr;display:block;">+966 503 638 81</span></div></div>
     </div>
-    <form class="form" onsubmit="handleSubmit(event)">
+    <form class="form" id="contactForm" onsubmit="handleSubmit(event)">
       <div class="form-row">
         <div class="ff"><label class="ar">الاسم</label><label class="en">Name</label><input type="text" class="ar" placeholder="اسمك الكريم"/><input type="text" class="en" placeholder="Your Name"/></div>
         <div class="ff"><label class="ar">رقم الجوال</label><label class="en">Phone</label><input type="tel" placeholder="+966 5XX XXX XXX"/></div>
@@ -299,6 +305,10 @@ footer p{font-family:'Outfit',sans-serif;font-size:11px;color:var(--text-muted);
       <div class="ff"><label class="ar">تفاصيل الفعالية</label><label class="en">Details</label><textarea class="ar" placeholder="أخبرنا عن الفعالية وتاريخها وعدد المشاركين المتوقع..."></textarea><textarea class="en" placeholder="Tell us about the event, date, expected attendees..."></textarea></div>
       <button type="submit" class="submit-btn ar">أرسل الطلب ←</button>
       <button type="submit" class="submit-btn en">Send Request →</button>
+      <div class="form-msg ok ar" id="msgOkAr">✓ تم إرسال طلبكم بنجاح. سنتواصل معكم قريبًا.</div>
+      <div class="form-msg ok en" id="msgOkEn">✓ Your request was sent successfully. We'll be in touch soon.</div>
+      <div class="form-msg err ar" id="msgErrAr">حدث خطأ أثناء الإرسال. يرجى المحاولة مرة أخرى أو التواصل عبر الهاتف.</div>
+      <div class="form-msg err en" id="msgErrEn">Something went wrong. Please try again or reach us by phone.</div>
     </form>
   </div>
 </section>
@@ -328,17 +338,77 @@ function toggleLang(){
   if(h.lang === 'ar'){ h.lang = 'en'; h.dir = 'ltr'; }
   else { h.lang = 'ar'; h.dir = 'rtl'; }
 }
-function handleSubmit(e){
+
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xnjedvor';
+
+function getFieldValue(ff){
+  const arField = ff.querySelector('input.ar, textarea.ar');
+  const enField = ff.querySelector('input.en, textarea.en');
+  if(arField || enField){
+    return (arField && arField.value.trim()) || (enField && enField.value.trim()) || '';
+  }
+  const single = ff.querySelector('input, textarea');
+  return single ? single.value.trim() : '';
+}
+
+async function handleSubmit(e){
   e.preventDefault();
+  const form = e.target;
   const isAr = document.documentElement.lang === 'ar';
-  e.target.querySelectorAll('button[type="submit"]').forEach(b => {
-    b.style.background = '#1a6b2a';
-    b.textContent = isAr ? '✓ تم الإرسال' : '✓ Sent';
-    setTimeout(() => {
-      b.style.background = '';
-      b.textContent = isAr ? 'أرسل الطلب ←' : 'Send Request →';
-    }, 3000);
-  });
+  const ffs = form.querySelectorAll('.ff');
+  const btns = form.querySelectorAll('button[type="submit"]');
+  const okMsgs = [document.getElementById('msgOkAr'), document.getElementById('msgOkEn')];
+  const errMsgs = [document.getElementById('msgErrAr'), document.getElementById('msgErrEn')];
+
+  [...okMsgs, ...errMsgs].forEach(m => m.classList.remove('show'));
+
+  const name = getFieldValue(ffs[0]);
+  const phone = getFieldValue(ffs[1]);
+  const organization = getFieldValue(ffs[2]);
+  const selectEl = ffs[3].querySelector('select');
+  const rawEventType = selectEl.options[selectEl.selectedIndex]?.textContent.trim() || '';
+  const placeholders = ['اختر نوع الفعالية', 'Select Event Type'];
+  const eventType = placeholders.includes(rawEventType) ? '' : rawEventType;
+  const details = getFieldValue(ffs[4]);
+
+  if(!name || !phone){
+    errMsgs.forEach(m => { if(!m.classList.contains('ok')) {} });
+    const msg = isAr ? errMsgs[0] : errMsgs[1];
+    const fallbackText = isAr ? 'الرجاء تعبئة الاسم ورقم الجوال على الأقل.' : 'Please fill in at least your name and phone number.';
+    msg.textContent = fallbackText;
+    msg.classList.add('show');
+    return;
+  }
+
+  btns.forEach(b => { b.disabled = true; });
+  const originalTexts = Array.from(btns).map(b => b.textContent);
+  btns.forEach(b => { b.textContent = isAr ? 'جاري الإرسال...' : 'Sending...'; });
+
+  try{
+    const res = await fetch(FORMSPREE_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        name, phone, organization, eventType, details,
+        language: isAr ? 'ar' : 'en',
+        source: 'eyalentertainment.com contact form'
+      })
+    });
+
+    if(res.ok){
+      form.reset();
+      (isAr ? okMsgs[0] : okMsgs[1]).classList.add('show');
+    } else {
+      (isAr ? errMsgs[0] : errMsgs[1]).textContent = isAr
+        ? 'حدث خطأ أثناء الإرسال. يرجى المحاولة مرة أخرى أو التواصل عبر الهاتف.'
+        : "Something went wrong. Please try again or reach us by phone.";
+      (isAr ? errMsgs[0] : errMsgs[1]).classList.add('show');
+    }
+  } catch(err){
+    (isAr ? errMsgs[0] : errMsgs[1]).classList.add('show');
+  } finally {
+    btns.forEach((b,i) => { b.disabled = false; b.textContent = originalTexts[i]; });
+  }
 }
 </script>
 </body>

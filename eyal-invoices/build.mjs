@@ -20,7 +20,12 @@ for (const w of [400, 500, 700, 900]) {
 
 const qr = readFileSync(v('qrcode.js'), 'utf8');
 let html = readFileSync(join(dir, 'src', 'index.html'), 'utf8');
-html = html.replace('/*__FONTS__*/', () => fonts.join('\n')).replace('/*__QRCODE__*/', () => qr);
+const dataUri = f => 'data:image/png;base64,' + readFileSync(v(f)).toString('base64');
+html = html
+  .replace('/*__FONTS__*/', () => fonts.join('\n'))
+  .replace('/*__QRCODE__*/', () => qr)
+  .replace('/*__LOGO_MARK__*/', () => dataUri('logo-mark.png'))
+  .replace('/*__LOGO_WORD__*/', () => dataUri('logo-word-white.png'));
 
 writeFileSync(join(dir, 'Eyal-Invoices.html'), html);
 console.log(`Eyal-Invoices.html  ${(html.length / 1024).toFixed(0)} KB`);
